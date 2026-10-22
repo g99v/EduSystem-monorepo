@@ -1,0 +1,40 @@
+# Local environment files (safe examples remain publishable)
+.env
+.env.*
+!.env.example
+
+# Local credentials and generated gateway configuration
+secrets/
+.aws/
+*.key
+*.pem
+*.p12
+*.pfx
+*.jks
+*.keystore
+/backend/gateway/kong.yaml
+
+# Local API scratch collections; publish sanitized .http.example files instead
+*.http
+
+# Runtime data, backups, and logs
+/backend/data/
+backups/
+exports/
+*.dump
+*.backup
+*.sql.gz
+*.sqlite
+*.sqlite3
+*.log
+
+# Build artifacts and editor settings
+node_modules/
+target/
+dist/
+__pycache__/
+*.pyc
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
