@@ -1,0 +1,284 @@
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  color: #e5ebf0;
+  background: #111820;
+}
+
+[data-theme='dark'] body,
+[data-theme='dark'] .auth-shell,
+[data-theme='dark'] .dashboard-shell {
+  background: #111820;
+}
+
+[data-theme='dark'] .auth-card,
+[data-theme='dark'] .sidebar,
+[data-theme='dark'] .panel,
+[data-theme='dark'] .course-card,
+[data-theme='dark'] .course-content-card,
+[data-theme='dark'] .course-form,
+[data-theme='dark'] .confirm-dialog {
+  border-color: #2c3945;
+  background: #18222c;
+  box-shadow: 0 4px 14px rgb(0 0 0 / 16%);
+}
+
+[data-theme='dark'] .topbar {
+  border-color: #2c3945;
+  background: rgb(24 34 44 / 96%);
+}
+
+[data-theme='dark'] .brand,
+[data-theme='dark'] .page-heading h1,
+[data-theme='dark'] .panel-header h2,
+[data-theme='dark'] .course-content-card h2,
+[data-theme='dark'] .course-content-card h3,
+[data-theme='dark'] .course-form h2,
+[data-theme='dark'] .confirm-dialog h2,
+[data-theme='dark'] .course-card h3,
+[data-theme='dark'] .resource-row strong,
+[data-theme='dark'] .submission-row strong,
+[data-theme='dark'] .announcement-header h2 {
+  color: #e5ebf0;
+}
+
+[data-theme='dark'] .auth-form label,
+[data-theme='dark'] .course-form label,
+[data-theme='dark'] .submission-form label,
+[data-theme='dark'] .grade-form label {
+  color: #cbd5dc;
+}
+
+[data-theme='dark'] .auth-form input,
+[data-theme='dark'] .course-form input:not([type='file']),
+[data-theme='dark'] .course-form textarea,
+[data-theme='dark'] .grade-form input {
+  border-color: #3a4a57;
+  background: #111820;
+  color: #e5ebf0;
+}
+
+[data-theme='dark'] .auth-form input:hover,
+[data-theme='dark'] .course-form input:not([type='file']):hover,
+[data-theme='dark'] .course-form textarea:hover,
+[data-theme='dark'] .grade-form input:hover {
+  border-color: #607482;
+}
+
+[data-theme='dark'] .auth-form input:focus,
+[data-theme='dark'] .course-form input:not([type='file']):focus,
+[data-theme='dark'] .course-form textarea:focus,
+[data-theme='dark'] .grade-form input:focus {
+  border-color: #78a9cb;
+  box-shadow: 0 0 0 3px rgb(120 169 203 / 16%);
+}
+
+[data-theme='dark'] .auth-link,
+[data-theme='dark'] .back-link,
+[data-theme='dark'] .announcement-body a {
+  color: #8ebada;
+}
+
+[data-theme='dark'] .auth-link:hover,
+[data-theme='dark'] .back-link:hover {
+  color: #b5d5eb;
+}
+
+[data-theme='dark'] .sidebar-link {
+  color: #9eacb8;
+}
+
+[data-theme='dark'] .sidebar-link:hover {
+  background: #202c36;
+  color: #c4d8e6;
+}
+
+[data-theme='dark'] .sidebar-link.active {
+  background: #253745;
+  color: #a9d0eb;
+  border: 1px solid #657a88;
+}
+
+[data-theme='dark'] .logout-button,
+[data-theme='dark'] .theme-button,
+[data-theme='dark'] .file-actions button,
+[data-theme='dark'] .cancel-button,
+[data-theme='dark'] .course-form input[type='file']::file-selector-button,
+[data-theme='dark'] .submission-form input[type='file']::file-selector-button {
+  border-color: #3a4a57;
+  background: #1d2934;
+  color: #b7ccda;
+}
+
+[data-theme='dark'] .logout-button:not(:disabled):hover,
+[data-theme='dark'] .theme-button:hover,
+[data-theme='dark'] .file-actions button:not(:disabled):hover,
+[data-theme='dark'] .cancel-button:not(:disabled):hover,
+[data-theme='dark'] .course-form input[type='file']::file-selector-button:hover,
+[data-theme='dark'] .submission-form input[type='file']::file-selector-button:hover {
+  border-color: #657a88;
+  background: #263541;
+  color: #d3e3ed;
+}
+
+[data-theme='dark'] .primary-button,
+[data-theme='dark'] .small-button {
+  border-color: #477ca2;
+  background: #376d94;
+}
+
+[data-theme='dark'] .primary-button:not(:disabled):hover,
+[data-theme='dark'] .small-button:not(:disabled):hover {
+  border-color: #5b91b6;
+  background: #427da6;
+}
+
+[data-theme='dark'] .item-content strong {
+  color: #dbe4ea;
+}
+
+[data-theme='dark'] .item-content small,
+[data-theme='dark'] .item-time,
+[data-theme='dark'] .course-card p,
+[data-theme='dark'] .empty-state,
+[data-theme='dark'] .course-heading p,
+[data-theme='dark'] .course-content-card p,
+[data-theme='dark'] .resource-row small,
+[data-theme='dark'] .submission-row small,
+[data-theme='dark'] .resource-filename,
+[data-theme='dark'] .assignment-header span,
+[data-theme='dark'] .grade-form > span,
+[data-theme='dark'] .announcement-header small,
+[data-theme='dark'] .announcement-body,
+[data-theme='dark'] .course-form input[type='file'],
+[data-theme='dark'] .submission-form input[type='file'] {
+  color: #9eacb8;
+}
+
+[data-theme='dark'] .list-item,
+[data-theme='dark'] .resource-row,
+[data-theme='dark'] .submission-row,
+[data-theme='dark'] .submission-form {
+  border-color: #2a3742;
+}
+
+[data-theme='dark'] .item-link:hover {
+  background: #202c36;
+}
+
+[data-theme='dark'] .course-card:hover {
+  border-color: #50626f;
+  box-shadow: 0 6px 16px rgb(0 0 0 / 20%);
+}
+
+[data-theme='dark'] .status {
+  background: #463a27;
+  color: #e0bd7f;
+}
+
+[data-theme='dark'] .status.complete {
+  background: #243b2d;
+  color: #8cc49b;
+}
+
+[data-theme='dark'] .course-tabs {
+  border-color: #2c3945;
+}
+
+[data-theme='dark'] .course-tabs button {
+  color: #9eacb8;
+}
+
+[data-theme='dark'] .course-tabs button:hover,
+[data-theme='dark'] .course-tabs button.active {
+  color: #9dc8e5;
+}
+
+[data-theme='dark'] .course-tabs button.active {
+  border-color: #79a9c9;
+}
+
+[data-theme='dark'] .announcement-form .ql-toolbar,
+[data-theme='dark'] .announcement-form .ql-container {
+  border-color: #3a4a57;
+  background: #111820;
+}
+
+[data-theme='dark'] .announcement-form .ql-editor {
+  color: #e5ebf0;
+}
+
+[data-theme='dark'] .ql-snow .ql-stroke {
+  stroke: #aab8c3;
+}
+
+[data-theme='dark'] .ql-snow .ql-fill {
+  fill: #aab8c3;
+}
+
+[data-theme='dark'] .ql-snow .ql-picker {
+  color: #aab8c3;
+}
+
+[data-theme='dark'] .ql-snow .ql-picker-options {
+  border-color: #3a4a57;
+  background: #18222c;
+}
+
+[data-theme='dark'] .confirm-backdrop {
+  background: rgb(0 0 0 / 55%);
+}
+
+[data-theme='dark'] .confirm-dialog p {
+  color: #aebbc4;
+}
+
+[data-theme='dark'] .file-actions .delete-button,
+[data-theme='dark'] .confirm-actions .delete-confirm-button {
+  border-color: #a94d4d;
+  background: #913c3c;
+  color: #fff;
+}
+
+[data-theme='dark'] .grade-highest {
+  background: #21432c;
+  color: #89d29f;
+}
+
+[data-theme='dark'] .grade-above-average {
+  background: #354225;
+  color: #b8d27b;
+}
+
+[data-theme='dark'] .grade-average {
+  background: #4a3f23;
+  color: #ebc96e;
+}
+
+[data-theme='dark'] .grade-below-average {
+  background: #4a3222;
+  color: #e5a66d;
+}
+
+[data-theme='dark'] .grade-lowest {
+  background: #482829;
+  color: #e89999;
+}
+
+[data-theme='dark'] .grade-ungraded {
+  background: #303b43;
+  color: #b2bdc5;
+}
+
+body,
+.auth-shell,
+.auth-card,
+.dashboard-shell,
+.sidebar,
+.topbar,
+.panel,
+.course-card,
+.course-content-card,
+.course-form,
+.confirm-dialog {
+  transition: background-color 180ms ease, border-color 180ms ease, color 180ms ease;
+}

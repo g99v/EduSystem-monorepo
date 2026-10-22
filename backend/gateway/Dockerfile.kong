@@ -1,0 +1,18 @@
+FROM node:24.16.0-bookworm-slim@sha256:2c87ef9bd3c6a3bd4b472b4bec2ce9d16354b0c574f736c476489d09f560a203 AS node-runtime
+
+WORKDIR /opt/kong-js-plugins
+COPY js-plugins/package.json js-plugins/package-lock.json ./
+RUN npm ci --omit=dev --ignore-scripts --no-audit --no-fund
+
+FROM kong:3.9.1-ubuntu@sha256:76c14b93e989f7f4418039f7f9789ca32564016211c86ac1a18022f4788e7b9c
+USER root
+COPY --from=node-runtime /usr/local/bin/node /usr/local/bin/node
+COPY --from=node-runtime /opt/kong-js-plugins/node_modules /opt/kong-js-plugins/node_modules
+COPY js-plugins/package.json js-plugins/package-lock.json /opt/kong-js-plugins/
+COPY js-plugins/plugins /opt/kong-js-plugins/plugins
+COPY js-plugins/lib /opt/kong-js-plugins/lib
+COPY js-plugins/bin /opt/kong-js-plugins/bin
+COPY patches/fix-admin-pluginserver.js /opt/kong-compat/fix-admin-pluginserver.js
+RUN node /opt/kong-compat/fix-admin-pluginserver.js
+RUN chown -R kong:kong /opt/kong-js-plugins
+USER kong

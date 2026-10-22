@@ -1,0 +1,12 @@
+apiVersion: 1
+providers:
+  - name: EduSystem gateway
+    orgId: 1
+    folder: EduSystem
+    folderUid: edusystem
+    type: file
+    disableDeletion: false
+    allowUiUpdates: false
+    updateIntervalSeconds: 10
+    options:
+      path: /etc/grafana/dashboards

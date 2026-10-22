@@ -1,0 +1,486 @@
+.back-link {
+  display: inline-block;
+  margin-bottom: 20px;
+  color: #315b78;
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 150ms ease, transform 150ms ease;
+}
+
+.back-link:hover {
+  color: #183f5d;
+  transform: translateX(-2px);
+}
+
+.course-heading {
+  margin-bottom: 24px;
+}
+
+.course-overview {
+  margin-bottom: 24px;
+}
+
+.course-heading p {
+  margin: 8px 0 0;
+  color: #687985;
+  font-size: 13px;
+}
+
+.course-tabs {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 22px;
+  border-bottom: 1px solid #dfe5e6;
+}
+
+.course-tabs button {
+  padding: 0 2px 12px;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: none;
+  color: #657783;
+  font-size: 13px;
+  transition: border-color 150ms ease, color 150ms ease;
+}
+
+.course-tabs button:hover {
+  color: #254e71;
+}
+
+.course-tabs button.active {
+  border-color: #254e71;
+  color: #254e71;
+  font-weight: 700;
+}
+
+.course-section {
+  display: grid;
+  gap: 18px;
+  max-width: 900px;
+}
+
+.course-content-card,
+.course-form {
+  padding: 22px 24px;
+  border: 1px solid #dfe5e7;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgb(24 43 66 / 4%);
+}
+
+.course-content-card h2,
+.course-form h2 {
+  margin: 0 0 16px;
+  font-size: 16px;
+}
+
+.course-content-card h3 {
+  margin: 20px 0 12px;
+  font-size: 14px;
+}
+
+.course-content-card p {
+  margin: 9px 0;
+  color: #586b78;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.resource-row,
+.submission-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 0;
+  border-top: 1px solid #edf0f0;
+}
+
+.grade-pill {
+  display: inline-block;
+  margin-top: 6px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.grade-highest {
+  background: #dcefe2;
+  color: #2b9d4f;
+}
+
+.grade-above-average {
+  background: #e8efce;
+  color: #62ae49;
+}
+
+.grade-average {
+  background: #f8edbe;
+  color: #eda20c;
+}
+
+.grade-below-average {
+  background: #f8ddc2;
+  color: #a55204;
+}
+
+.grade-lowest {
+  background: #f3d5d5;
+  color: #8c2f2f;
+}
+
+.grade-ungraded {
+  background: #e8ebed;
+  color: #5c6870;
+}
+
+.resource-row strong,
+.resource-row small,
+.submission-row strong,
+.submission-row small {
+  display: block;
+}
+
+.resource-row strong,
+.submission-row strong {
+  font-size: 13px;
+}
+
+.resource-row small,
+.submission-row small,
+.resource-filename {
+  margin-top: 5px;
+  color: #81909a;
+  font-size: 11px;
+}
+
+.file-actions {
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 8px;
+}
+
+.file-actions button {
+  padding: 6px 9px;
+  border: 1px solid #c9d3d9;
+  border-radius: 5px;
+  background: #fff;
+  color: #315b78;
+  font-size: 12px;
+  font-weight: 500;
+  transition: border-color 150ms ease, background-color 150ms ease, color 150ms ease, transform 150ms ease;
+}
+
+.file-actions button:not(:disabled):hover {
+  border-color: #9fb0ba;
+  background: #f2f6f8;
+  color: #1c4766;
+  transform: translateY(-1px);
+}
+
+.file-actions button:not(:disabled):active {
+  transform: translateY(0);
+}
+
+.file-actions button:disabled {
+  color: #aab3b9;
+  cursor: not-allowed;
+}
+
+.file-actions .delete-button,
+.delete-confirm-button {
+  border-color: #a83a3a;
+  background: #a83a3a;
+  color: #fff;
+}
+
+.file-actions .delete-button:not(:disabled):hover,
+.confirm-actions .delete-confirm-button:not(:disabled):hover {
+  border-color: #872e2e;
+  background: #872e2e;
+  color: #fff;
+}
+
+.confirm-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgb(0 0 0 / 35%);
+}
+
+.confirm-dialog {
+  width: min(100%, 360px);
+  padding: 22px;
+  border: 1px solid #e0e5e7;
+  border-radius: 9px;
+  background: #fff;
+  box-shadow: 0 16px 40px rgb(17 31 46 / 18%);
+}
+
+.confirm-dialog h2 {
+  margin: 0 0 12px;
+  font-size: 18px;
+}
+
+.confirm-dialog p {
+  margin: 0 0 20px;
+  color: #586b78;
+  font-size: 13px;
+}
+
+.confirm-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.confirm-actions button {
+  padding: 7px 12px;
+  border: 1px solid #c9d3d9;
+  border-radius: 5px;
+  font-weight: 500;
+  transition: border-color 150ms ease, background-color 150ms ease, color 150ms ease;
+}
+
+.cancel-button {
+  background: #fff;
+  color: #315b78;
+}
+
+.cancel-button:not(:disabled):hover {
+  border-color: #9fb0ba;
+  background: #f2f6f8;
+}
+
+.confirm-actions .delete-confirm-button {
+  border-color: #a83a3a;
+  background: #a83a3a;
+  color: #fff;
+}
+
+.confirm-dialog .form-notice {
+  color: #a33;
+}
+
+.course-form,
+.submission-form {
+  display: grid;
+  gap: 9px;
+}
+
+.course-form {
+  max-width: 900px;
+}
+
+.course-form label,
+.submission-form label,
+.grade-form label {
+  color: #354958;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.course-form input:not([type='file']),
+.course-form textarea,
+.grade-form input {
+  width: 100%;
+  min-height: 38px;
+  padding: 8px 10px;
+  border: 1px solid #c3cdd2;
+  border-radius: 6px;
+  background: #fff;
+  color: #172332;
+  font-size: 13px;
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+
+.course-form textarea {
+  resize: vertical;
+}
+
+.course-form input:not([type='file']):hover,
+.course-form textarea:hover,
+.grade-form input:hover {
+  border-color: #9fadb6;
+}
+
+.course-form input:not([type='file']):focus,
+.course-form textarea:focus,
+.grade-form input:focus {
+  border-color: #5f8eaf;
+  outline: 0;
+  box-shadow: 0 0 0 3px rgb(95 142 175 / 14%);
+}
+
+.course-form input[type='file'],
+.submission-form input[type='file'] {
+  max-width: 100%;
+  color: #586b78;
+  font-size: 12px;
+}
+
+.course-form input[type='file']::file-selector-button,
+.submission-form input[type='file']::file-selector-button {
+  margin-right: 9px;
+  padding: 6px 9px;
+  border: 1px solid #c9d3d9;
+  border-radius: 5px;
+  background: #f7f9fa;
+  color: #315b78;
+  cursor: pointer;
+  transition: border-color 150ms ease, background-color 150ms ease;
+}
+
+.course-form input[type='file']::file-selector-button:hover,
+.submission-form input[type='file']::file-selector-button:hover {
+  border-color: #9fb0ba;
+  background: #eef3f5;
+}
+
+.course-form .small-button,
+.submission-form .small-button {
+  margin-top: 5px;
+}
+
+.form-message {
+  color: #315b78;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.assignment-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.assignment-header h2 {
+  margin-bottom: 6px;
+}
+
+.assignment-header span,
+.grade-form > span {
+  color: #6d7e89;
+  font-size: 12px;
+}
+
+.submission-form {
+  margin-top: 20px;
+  padding: 18px 0;
+  border-top: 1px solid #edf0f0;
+}
+
+.instructor-submission {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.grade-form {
+  display: grid;
+  grid-template-columns: auto 70px auto minmax(120px, 1fr) auto;
+  grid-column: 1 / -1;
+  align-items: center;
+  gap: 8px;
+}
+
+.grade-form .form-message {
+  grid-column: 1 / -1;
+}
+
+.announcement-form .ql-toolbar,
+.announcement-form .ql-container {
+  border-color: #c3cdd2;
+}
+
+.announcement-form .ql-toolbar {
+  border-radius: 4px 4px 0 0;
+}
+
+.announcement-form .ql-container {
+  min-height: 150px;
+  border-radius: 0 0 4px 4px;
+  font-family: inherit;
+  font-size: 13px;
+}
+
+.announcement-form .ql-editor {
+  min-height: 150px;
+}
+
+.announcement-editor:focus-within .ql-toolbar,
+.announcement-editor:focus-within .ql-container {
+  border-color: #5f8eaf;
+}
+
+.announcement-editor:focus-within {
+  border-radius: 6px;
+  box-shadow: 0 0 0 3px rgb(95 142 175 / 14%);
+}
+
+.announcement-editor .ql-toolbar {
+  direction: ltr;
+  text-align: left;
+}
+
+.announcement-editor .ql-editor {
+  text-align: start;
+  unicode-bidi: plaintext;
+}
+
+.announcement-form-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.announcement-form-actions .cancel-button {
+  padding: 8px 13px;
+  border: 1px solid #c9d3d9;
+  border-radius: 4px;
+}
+
+.announcement-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.announcement-header h2 {
+  margin: 0;
+}
+
+.announcement-header small {
+  display: block;
+  margin-top: 6px;
+  color: #81909a;
+  font-size: 11px;
+}
+
+.announcement-body {
+  color: #586b78;
+  font-size: 13px;
+  line-height: 1.5;
+  text-align: start;
+  unicode-bidi: plaintext;
+}
+
+.announcement-body > :first-child {
+  margin-top: 0;
+}
+
+.announcement-body > :last-child {
+  margin-bottom: 0;
+}
+
+.announcement-body a {
+  color: #315b78;
+}
+

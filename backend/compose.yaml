@@ -1,0 +1,206 @@
+name: edusystem
+
+services:
+  database:
+    image: ${POSTGRES_IMAGE}
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgres-data:${POSTGRES_DATA_PATH}
+    ports:
+      - "127.0.0.1:5432:5432"
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build:
+      context: .
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://database:5432/${POSTGRES_DB}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
+      FRONTEND_ORIGIN: ${FRONTEND_ORIGIN}
+      STORAGE_PATH: /app/data/files
+      JWT_ISSUER: edusystem-kong
+      JWT_AUDIENCE: edusystem-api
+      JWT_PUBLIC_KEY: file:/run/secrets/kong_jwt_public_key
+      AUTH_COOKIE_SECURE: ${AUTH_COOKIE_SECURE:-false}
+      TLS_SERVER_CERT: file:/run/secrets/spring_server_cert
+      TLS_SERVER_KEY: file:/run/secrets/spring_server_key
+    volumes:
+      - ./data/files:/app/data/files
+    secrets:
+      - kong_jwt_public_key
+      - spring_server_cert
+      - spring_server_key
+    depends_on:
+      database:
+        condition: service_healthy
+    networks:
+      - default
+      - gateway
+
+  frontend:
+    build:
+      context: ../frontend/
+    ports:
+      - "5173:80"
+    depends_on:
+      backend:
+        condition: service_started
+      kong:
+        condition: service_healthy
+    networks:
+      - default
+      - gateway
+
+  kong:
+    image: edusystem-kong:3.9.1-js
+    build:
+      context: ./gateway
+      dockerfile: Dockerfile.kong
+    depends_on:
+      backend:
+        condition: service_started
+    user: "${KONG_USER:-kong}"
+    environment:
+      KONG_DATABASE: "off"
+      KONG_DECLARATIVE_CONFIG: /etc/kong/kong.yaml
+      KONG_ADMIN_ACCESS_LOG: /dev/stdout
+      KONG_ADMIN_ERROR_LOG: /dev/stderr
+      KONG_PROXY_LISTEN: "${KONG_PROXY_LISTEN:-0.0.0.0:8000}"
+      KONG_ADMIN_LISTEN: "${KONG_ADMIN_LISTEN:-0.0.0.0:8001}"
+      KONG_ADMIN_GUI_LISTEN: "${KONG_ADMIN_GUI_LISTEN:-0.0.0.0:8002}"
+      KONG_PROXY_ACCESS_LOG: /dev/stdout
+      KONG_PROXY_ERROR_LOG: /dev/stderr
+      KONG_PREFIX: ${KONG_PREFIX:-/var/run/kong}
+      KONG_LOG_LEVEL: info
+      KONG_STATUS_LISTEN: "0.0.0.0:8100"
+      KONG_CLIENT_SSL: "off"
+      KONG_PLUGINS: bundled,edusystem-jwt-issuer
+      KONG_PLUGINSERVER_NAMES: js
+      KONG_PLUGINSERVER_JS_SOCKET: ${KONG_PREFIX:-/var/run/kong}/js_pluginserver.sock
+      KONG_PLUGINSERVER_JS_START_CMD: node /opt/kong-js-plugins/bin/start-plugin-server.js --kong-prefix ${KONG_PREFIX:-/var/run/kong} --plugins-directory /opt/kong-js-plugins/plugins --sock-name js_pluginserver.sock
+      KONG_PLUGINSERVER_JS_QUERY_CMD: /opt/kong-js-plugins/node_modules/.bin/kong-js-pluginserver --plugins-directory /opt/kong-js-plugins/plugins --dump-all-plugins
+      KONG_NGINX_HTTP_CLIENT_BODY_BUFFER_SIZE: 16k
+    secrets:
+      - internal_ca
+      - kong_internal_api_key
+      - kong_jwt_private_key
+      - kong_jwt_public_key
+    networks:
+      - gateway
+      - monitoring
+    ports:
+      # The following two environment variables default to an insecure value (0.0.0.0)
+      # according to the CIS Security test.
+      - "${KONG_INBOUND_PROXY_LISTEN:-0.0.0.0}:8000:8000/tcp"
+      - "${KONG_INBOUND_SSL_PROXY_LISTEN:-0.0.0.0}:8443:8443/tcp"
+      # Making them mandatory but undefined, like so would be backwards-breaking:
+      # - "${KONG_INBOUND_PROXY_LISTEN?Missing inbound proxy host}:8000:8000/tcp"
+      # - "${KONG_INBOUND_SSL_PROXY_LISTEN?Missing inbound proxy ssl host}:8443:8443/tcp"
+      # Alternative is deactivating check 5.13 in the security bench, if we consider Kong's own config to be enough security here
+
+      - "127.0.0.1:8001:8001/tcp"
+      - "127.0.0.1:8444:8444/tcp"
+      - "127.0.0.1:8002:8002/tcp"
+    healthcheck:
+      test: [ "CMD-SHELL", "kong health && node /opt/kong-js-plugins/bin/check-plugin-server.js" ]
+      interval: 10s
+      timeout: 10s
+      retries: 10
+    restart: on-failure:5
+    read_only: true
+    volumes:
+      - ./gateway/kong.yaml:/etc/kong/kong.yaml:ro
+      - kong_prefix_vol:${KONG_PREFIX:-/var/run/kong}
+      - kong_tmp_vol:/tmp
+    security_opt:
+      - no-new-privileges
+
+  prometheus:
+    image: prom/prometheus:v3.15.0@sha256:efd719c99d83b060d9daefdcf00360461adf279f45ef5391f8d111892118753e
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+      - --storage.tsdb.retention.time=15d
+      - --storage.tsdb.retention.size=2GB
+    volumes:
+      - ./gateway/monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    networks:
+      - monitoring
+    ports:
+      - "127.0.0.1:9090:9090"
+    depends_on:
+      kong:
+        condition: service_healthy
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:13.2.3@sha256:b28bae15e219c998fb0e0424ed724930cc61b1f61fb404d47c862f9a23f9e572
+    environment:
+      GF_SECURITY_ADMIN_USER: ${GRAFANA_ADMIN_USER:-admin}
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD:?Run python scripts/local-secrets.py generate first}
+      GF_USERS_ALLOW_SIGN_UP: "false"
+      GF_ANALYTICS_REPORTING_ENABLED: "false"
+      GF_ANALYTICS_CHECK_FOR_UPDATES: "false"
+      GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH: /etc/grafana/dashboards/edusystem-gateway.json
+    volumes:
+      - ./gateway/monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./gateway/monitoring/grafana/dashboards:/etc/grafana/dashboards:ro
+      - grafana_data:/var/lib/grafana
+    networks:
+      - monitoring
+    ports:
+      - "127.0.0.1:3000:3000"
+    depends_on:
+      - prometheus
+    restart: unless-stopped
+
+secrets:
+  kong_jwt_public_key:
+    file: ./secrets/kong-jwt-public.pem
+  spring_server_cert:
+    file: ./secrets/mtls/spring.pem
+  spring_server_key:
+    file: ./secrets/mtls/spring.key
+  kong_jwt_private_key:
+    file: ./secrets/kong-jwt-private.pem
+  kong_internal_api_key:
+    file: ./secrets/kong-internal-api-key
+  internal_ca:
+    file: ./secrets/mtls/ca.pem
+
+volumes:
+  postgres-data:
+    external: true
+    name: ${POSTGRES_VOLUME}
+  prometheus_data:
+    external: true
+    name: compose_prometheus_data
+  grafana_data:
+    external: true
+    name: compose_grafana_data
+  kong_prefix_vol:
+    driver_opts:
+      type: tmpfs
+      device: tmpfs
+  kong_tmp_vol:
+    driver_opts:
+      type: tmpfs
+      device: tmpfs
+
+networks:
+  default: {}
+  gateway:
+    external: true
+    name: edusystem-gateway
+  monitoring: {}

@@ -1,0 +1,147 @@
+# EduSystem course setup - VS Code REST Client
+# Send requests in order, waiting for each response before sending the next.
+# Keep REST Client cookie storage enabled for the admin session.
+# The admin must already exist. Both instructor emails must be unused.
+# This collection creates records; repeating course requests creates more courses.
+# Instructors own courses through instructorId; enrollment is for students.
+#
+# Docker Compose/Nginx: http://localhost:5173
+# Direct Spring Boot: http://localhost:8080
+
+@baseUrl = http://localhost:5173
+@adminEmail = admin@example.com
+@adminPassword = password123
+
+@firstInstructorEmail = prof1@ex.com
+@secondInstructorEmail = prof2@ex.com
+@instructorPassword = 12345678
+
+### 1. Get the initial CSRF token
+# @name setupCsrf
+GET {{baseUrl}}/api/auth/csrf
+
+### 2. Sign in as admin
+# @name setupLogin
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+X-CSRF-TOKEN: {{setupCsrf.response.body.$.token}}
+
+{
+  "email": "{{adminEmail}}",
+  "password": "{{adminPassword}}"
+}
+
+### 3. Get the new CSRF token after login
+# @name setupCsrfAfterLogin
+GET {{baseUrl}}/api/auth/csrf
+
+### 4. Create the first instructor
+# @name setupFirstInstructor
+POST {{baseUrl}}/api/instructors
+Content-Type: application/json
+X-CSRF-TOKEN: {{setupCsrfAfterLogin.response.body.$.token}}
+
+{
+  "firstName": "Professor",
+  "lastName": "One",
+  "email": "{{firstInstructorEmail}}",
+  "password": "{{instructorPassword}}"
+}
+
+### 5. Create the second instructor
+# @name setupSecondInstructor
+POST {{baseUrl}}/api/instructors
+Content-Type: application/json
+X-CSRF-TOKEN: {{setupCsrfAfterLogin.response.body.$.token}}
+
+{
+  "firstName": "Professor",
+  "lastName": "Two",
+  "email": "{{secondInstructorEmail}}",
+  "password": "{{instructorPassword}}"
+}
+
+### 6. Create Introduction to Computer Science
+# @name setupIntroCs
+POST {{baseUrl}}/api/courses
+Content-Type: application/json
+X-CSRF-TOKEN: {{setupCsrfAfterLogin.response.body.$.token}}
+
+{
+  "name": "Introduction to Computer Science",
+  "description": "Introduction to programming and computing fundamentals.",
+  "teacherName": "Professor One",
+  "instructorId": {{setupFirstInstructor.response.body.$.id}}
+}
+
+### 7. Create Object-Oriented Programming
+# @name setupOop
+POST {{baseUrl}}/api/courses
+Content-Type: application/json
+X-CSRF-TOKEN: {{setupCsrfAfterLogin.response.body.$.token}}
+
+{
+  "name": "Object-Oriented Programming",
+  "description": "Classes, objects, inheritance, polymorphism, and encapsulation.",
+  "teacherName": "Professor One",
+  "instructorId": {{setupFirstInstructor.response.body.$.id}}
+}
+
+### 8. Create Algorithms
+# @name setupAlgorithms
+POST {{baseUrl}}/api/courses
+Content-Type: application/json
+X-CSRF-TOKEN: {{setupCsrfAfterLogin.response.body.$.token}}
+
+{
+  "name": "Algorithms",
+  "description": "Algorithm design, analysis, searching, and sorting.",
+  "teacherName": "Professor One",
+  "instructorId": {{setupFirstInstructor.response.body.$.id}}
+}
+
+### 9. Create Data Structures
+# @name setupDataStructures
+POST {{baseUrl}}/api/courses
+Content-Type: application/json
+X-CSRF-TOKEN: {{setupCsrfAfterLogin.response.body.$.token}}
+
+{
+  "name": "Data Structures",
+  "description": "Arrays, linked lists, stacks, queues, trees, and graphs.",
+  "teacherName": "Professor Two",
+  "instructorId": {{setupSecondInstructor.response.body.$.id}}
+}
+
+### 10. Create Operating Systems
+# @name setupOperatingSystems
+POST {{baseUrl}}/api/courses
+Content-Type: application/json
+X-CSRF-TOKEN: {{setupCsrfAfterLogin.response.body.$.token}}
+
+{
+  "name": "Operating Systems",
+  "description": "Processes, threads, memory management, and file systems.",
+  "teacherName": "Professor Two",
+  "instructorId": {{setupSecondInstructor.response.body.$.id}}
+}
+
+### 11. Create Computer Networks
+# @name setupNetworks
+POST {{baseUrl}}/api/courses
+Content-Type: application/json
+X-CSRF-TOKEN: {{setupCsrfAfterLogin.response.body.$.token}}
+
+{
+  "name": "Computer Networks",
+  "description": "Network protocols, addressing, routing, and communication.",
+  "teacherName": "Professor Two",
+  "instructorId": {{setupSecondInstructor.response.body.$.id}}
+}
+
+### 12. List instructors
+GET {{baseUrl}}/api/instructors
+
+### 13. List courses and verify instructorId/instructorName
+GET {{baseUrl}}/api/courses
+

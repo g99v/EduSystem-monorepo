@@ -1,0 +1,13 @@
+{
+  "name": "edusystem-kong-plugins",
+  "version": "1.1.0",
+  "private": true,
+  "description": "EduSystem JavaScript JWT issuer for Kong",
+  "engines": {
+    "node": ">=24 <25"
+  },
+  "dependencies": {
+    "@prometheus-io/client": "0.16.1",
+    "kong-pdk": "0.6.0"
+  }
+}

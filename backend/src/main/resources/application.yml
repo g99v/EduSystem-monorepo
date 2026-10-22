@@ -1,0 +1,48 @@
+server:
+  port: 8443
+  ssl:
+    enabled: true
+    bundle: internal
+    client-auth: none
+
+spring:
+  ssl:
+    bundle:
+      pem:
+        internal:
+          keystore:
+            certificate: ${TLS_SERVER_CERT:file:./secrets/mtls/spring.pem}
+            private-key: ${TLS_SERVER_KEY:file:./secrets/mtls/spring.key}
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: ${SPRING_DATASOURCE_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 55MB
+  liquibase:
+    enabled: true
+    change-log: classpath:/db/changelog/db.changelog-master.yaml
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+app:
+  jwt:
+    issuer: ${JWT_ISSUER:edusystem-kong}
+    audience: ${JWT_AUDIENCE:edusystem-api}
+    public-key: ${JWT_PUBLIC_KEY:file:./secrets/kong-jwt-public.pem}
+  auth:
+    cookie-secure: ${AUTH_COOKIE_SECURE:false}
+  cors:
+    allowed-origin: ${FRONTEND_ORIGIN:http://localhost:5173}
+  storage:
+    directory: ${STORAGE_PATH:./data/files}
